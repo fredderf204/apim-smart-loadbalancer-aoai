@@ -1,4 +1,4 @@
-# Smart load balancing for OpenAI endpoints and Azure API Management sample code
+# Smart load balancing for OpenAI endpoints and Azure API Management Terraform sample code
 
 ## Introduction
 
