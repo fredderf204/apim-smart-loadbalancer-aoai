@@ -76,6 +76,7 @@ resource "azurerm_cognitive_deployment" "gpt-35-turbo-11" {
 
   scale {
     type = "Standard"
+    capacity = 120
   }
 }
 
@@ -100,6 +101,7 @@ resource "azurerm_cognitive_deployment" "gpt-35-turbo-12" {
 
   scale {
     type = "Standard"
+    capacity = 120
   }
 }
 
@@ -125,6 +127,7 @@ resource "azurerm_cognitive_deployment" "gpt-35-turbo-21" {
 
   scale {
     type = "Standard"
+    capacity = 120
   }
 }
 
@@ -186,7 +189,7 @@ resource "azurerm_api_management_api_diagnostic" "apim-diag" {
   api_management_name      = azurerm_api_management.apim.name
   api_name                 = azurerm_api_management_api.smart-api.name
   api_management_logger_id = azurerm_api_management_logger.apim-logger.id
-  
+
   sampling_percentage       = 5.0
   always_log_errors         = true
   log_client_ip             = true
