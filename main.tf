@@ -54,67 +54,6 @@ resource "azurerm_api_management" "apim" {
   }
 }
 
-# Create APIM Logger
-resource "azurerm_api_management_logger" "apim-logger" {
-  name                = "apimlogger"
-  api_management_name = azurerm_api_management.apim.name
-  resource_group_name = azurerm_resource_group.aoai-smart-load.name
-
-  application_insights {
-    instrumentation_key = azurerm_application_insights.aoai-app-insights.instrumentation_key
-  }
-}
-
-# Create APIM Diagnostic
-resource "azurerm_api_management_diagnostic" "apim-diag" {
-  identifier               = "applicationinsights"
-  resource_group_name      = azurerm_resource_group.aoai-smart-load.name
-  api_management_name      = azurerm_api_management.apim.name
-  api_management_logger_id = azurerm_api_management_logger.apim-logger.id
-
-  sampling_percentage       = 5.0
-  always_log_errors         = true
-  log_client_ip             = true
-  verbosity                 = "verbose"
-  http_correlation_protocol = "W3C"
-
-  frontend_request {
-    body_bytes = 32
-    headers_to_log = [
-      "content-type",
-      "accept",
-      "origin",
-    ]
-  }
-
-  frontend_response {
-    body_bytes = 32
-    headers_to_log = [
-      "content-type",
-      "content-length",
-      "origin",
-    ]
-  }
-
-  backend_request {
-    body_bytes = 32
-    headers_to_log = [
-      "content-type",
-      "accept",
-      "origin",
-    ]
-  }
-
-  backend_response {
-    body_bytes = 32
-    headers_to_log = [
-      "content-type",
-      "content-length",
-      "origin",
-    ]
-  }
-}
-
 # Create AOAI Priority 1 group
 # AOAI service 1-1
 resource "azurerm_cognitive_account" "aoai-smart-11" {
@@ -228,6 +167,69 @@ resource "azurerm_api_management_api" "smart-api" {
     query = "subscription-key"
   }
 }
+
+# Create APIM Logger
+resource "azurerm_api_management_logger" "apim-logger" {
+  name                = "apimlogger"
+  api_management_name = azurerm_api_management.apim.name
+  resource_group_name = azurerm_resource_group.aoai-smart-load.name
+
+  application_insights {
+    instrumentation_key = azurerm_application_insights.aoai-app-insights.instrumentation_key
+  }
+}
+
+# Create APIM Diagnostic
+resource "azurerm_api_management_api_diagnostic" "apim-diag" {
+  identifier               = "applicationinsights"
+  resource_group_name      = azurerm_resource_group.aoai-smart-load.name
+  api_management_name      = azurerm_api_management.apim.name
+  api_name                 = azurerm_api_management_api.smart-api.name
+  api_management_logger_id = azurerm_api_management_logger.apim-logger.id
+  
+  sampling_percentage       = 5.0
+  always_log_errors         = true
+  log_client_ip             = true
+  verbosity                 = "verbose"
+  http_correlation_protocol = "W3C"
+
+  frontend_request {
+    body_bytes = 32
+    headers_to_log = [
+      "content-type",
+      "accept",
+      "origin",
+    ]
+  }
+
+  frontend_response {
+    body_bytes = 32
+    headers_to_log = [
+      "content-type",
+      "content-length",
+      "origin",
+    ]
+  }
+
+  backend_request {
+    body_bytes = 32
+    headers_to_log = [
+      "content-type",
+      "accept",
+      "origin",
+    ]
+  }
+
+  backend_response {
+    body_bytes = 32
+    headers_to_log = [
+      "content-type",
+      "content-length",
+      "origin",
+    ]
+  }
+}
+
 
 # Edit XML to include above AOAI configuration
 data "template_file" "apim-policy" {
