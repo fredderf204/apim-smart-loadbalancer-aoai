@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repo is designed to implement a Smart load balancing for OpenAI endpoints and Azure API Management.
+This repo is designed to implement a Smart load balancing for OpenAI endpoints and Azure API Management using [Terraform](https://www.terraform.io/) code.
 
 Please find the original article [here](https://techcommunity.microsoft.com/t5/fasttrack-for-azure/smart-load-balancing-for-openai-endpoints-and-azure-api/ba-p/3991616).
 
@@ -15,7 +15,11 @@ shows how to create an Azure API Management Policy to seamlessly expose a single
 
 This sample terraform code deploys the all of the resources needed to implement the solution, along with Azure Application Insights to monitor the API Management.
 
-This code assumes you will have 2 priority groups. Priority group 1 has 2 Azure Open AI endpoints deployed into US East and US East 2 regions. Priority group 2 has 1 Azure Open AI endpoints deployed into the Canada East region.
+This code assumes;
+
+- You have decided/want to have 2 priority groups for your OpenAI endpoints. Please see the original article [here](https://techcommunity.microsoft.com/t5/fasttrack-for-azure/smart-load-balancing-for-openai-endpoints-and-azure-api/ba-p/3991616) for more details around the concept of "priority groups".
+- Priority group 1 has two Azure Open AI endpoints deployed into US East and US East 2 regions.
+- Priority group 2 has one Azure Open AI endpoints deployed into the Canada East region.
 
 All 3 Azure Open AI endpoints are using gpt-35-turbo with model version 0613.
 
